@@ -6,16 +6,15 @@ public class App
 {
     public static void main(String[] args)
     {
-        GraphNode node = new GraphNode();
-        node.setText("Hello World!");
-        GraphNode child = new GraphNode(node);
-        child.setText("And you!");
-        GraphNode childc = new GraphNode(child);
-        childc.setText("Fuck YOU!");
-        GraphNode child2 = new GraphNode(node);
-        child2.setText("And you too!");
-        GraphNode childc2 = new GraphNode(childc);
-        childc2.setText("Hah!");
+        GraphNode node = new GraphNode().setText("Hello!")
+                .append(
+                        new GraphNode().setText("How are you?")
+                        .append(new GraphNode().setText("I'm fine!"))
+                        .append(new GraphNode().setText("Oh, okay..."))
+                ).append(
+                        new GraphNode().setText("Why do u so angry?")
+                        .append(new GraphNode().setText("Fuck off!"))
+                );
         System.out.println(node.printTree());
     }
 }

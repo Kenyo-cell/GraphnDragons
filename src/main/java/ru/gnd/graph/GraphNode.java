@@ -15,19 +15,16 @@ public class GraphNode {
         children = new ArrayList<>();
     }
 
-    public GraphNode(GraphNode parent) {
-        parent.children.add(this);
-        indentationLevel = parent.getIndentationLevel() + 1;
-        children = new ArrayList<>();
-    }
-
-    public void append(GraphNode child) {
+    public GraphNode append(GraphNode child) {
         children.add(child);
         child.parent = this;
+        child.indentationLevel = this.indentationLevel + 1;
+        return this;
     }
 
-    public void setText(String text) {
+    public GraphNode setText(String text) {
         this.text = text;
+        return this;
     }
 
     public String getText() {
@@ -43,11 +40,28 @@ public class GraphNode {
         return "-".repeat(indentationLevel) + "|";
     }
 
+    private GraphNode buildTree() {
+        if (indentationLevel != NO_INDENT) return this;
+
+        for (GraphNode child : children) {
+            child.normalizeIndent();
+        }
+        return this;
+    }
+
+    private void normalizeIndent() {
+        this.indentationLevel = parent.indentationLevel + 1;
+        for (GraphNode child : children) {
+            child.normalizeIndent();
+        }
+    }
+
     public String toString() {
         return String.format("%s* %s", formatIndentation(), text);
     }
 
     public String printTree() {
+        buildTree();
         StringBuilder builder = new StringBuilder();
         builder.append(this + "\n");
         for (GraphNode child : children) {
